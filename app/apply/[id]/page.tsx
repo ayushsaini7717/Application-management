@@ -1,11 +1,16 @@
 "use server"
-import ApplyAction from "../actions/Apply";
-const ApplyApplication = () => {
+import ApplyAction from "../../actions/Apply";
+const ApplyApplication = async({
+    params,
+  }: {
+    params: Promise<{ id: string }>
+  }) => {
+    const { id } = await params
     return (
         <div className="h-screen w-screen flex justify-center items-center">
             <div className="h-[90vh] w-[90vw] border border-gray-500 rounded flex justify-center items-center">
                 <div className="flex flex-col">
-                    <h1 className="text-xl font-bold">Apply for Software Engineer</h1>
+                    <h1 className="text-xl font-bold">Apply for {id}</h1>
                     <h5 className="text-gray-600">Engineering | Remote | Full-time</h5>
 
                     <form action={ApplyAction} className="mt-4 flex flex-col">

@@ -20,4 +20,5 @@ model application{
   Lname String
   email String
   mobile String
+  resumelink String
 }
