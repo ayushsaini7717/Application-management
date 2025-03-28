@@ -24,12 +24,12 @@ const JobOpenings=()=>{
                 </div>
 
                 <div className="grid grid-cols-3 gap-2 mr-2 mt-3">
-                    <JobBlock heading="Software Engineer" subheading="Engineering" tag1="remote" tag2="full-time" desc="We're looking for a software engineer to join our team and help build our next generation of products."/>
-                    <JobBlock heading="Product Designer" subheading="Design" tag1="remote" tag2="full-time" desc="Join our design team to create beautiful and intuitive user experiences for our products."/>
-                    <JobBlock heading="Marketing Manager" subheading="Marketing" tag1="remote" tag2="full-time" desc="Lead our marketing efforts and help us reach new customers and markets."/>
-                    <JobBlock heading="Product Designer" subheading="Design" tag1="remote" tag2="full-time" desc="Join our design team to create beautiful and intuitive user experiences for our products."/>
-                    <JobBlock heading="Software Engineer" subheading="Engineering" tag1="remote" tag2="full-time" desc="We're looking for a software engineer to join our team and help build our next generation of products."/>
-                    <JobBlock heading="Marketing Manager" subheading="Marketing" tag1="remote" tag2="full-time" desc="Lead our marketing efforts and help us reach new customers and markets."/>
+                    <JobBlock heading="Software-Engineer" subheading="Engineering" tag1="remote" tag2="full-time" desc="We're looking for a software engineer to join our team and help build our next generation of products."/>
+                    <JobBlock heading="Product-Designer" subheading="Design" tag1="remote" tag2="full-time" desc="Join our design team to create beautiful and intuitive user experiences for our products."/>
+                    <JobBlock heading="Marketing-Manager" subheading="Marketing" tag1="remote" tag2="full-time" desc="Lead our marketing efforts and help us reach new customers and markets."/>
+                    <JobBlock heading="Product-Designer" subheading="Design" tag1="remote" tag2="full-time" desc="Join our design team to create beautiful and intuitive user experiences for our products."/>
+                    <JobBlock heading="Software-Engineer" subheading="Engineering" tag1="remote" tag2="full-time" desc="We're looking for a software engineer to join our team and help build our next generation of products."/>
+                    <JobBlock heading="Marketing-Manager" subheading="Marketing" tag1="remote" tag2="full-time" desc="Lead our marketing efforts and help us reach new customers and markets."/>
 
                 </div>
             </div>

@@ -1,17 +1,24 @@
-"use server"
+// "use server"
 import ApplyAction from "../../../actions/Apply";
-const ApplyApplication = async({
-    params,
-  }: {
-    params: Promise<{ id: string }>
+
+
+const ApplyApplication = async(
+    {params,searchParams}
+  : {
+    params: { id: string };
+    searchParams: {[key: string]: string | string[] | undefined};
   }) => {
-    const { id } = await params
+
+    const { id } =await params;
+    const subRole = (await searchParams).subRole || "Unknown";
+    const location= (await searchParams).location || "Unknown";
+    const jobType= (await searchParams).jobType || "Unknown";
     return (
         <div className="h-screen w-screen flex justify-center items-center">
             <div className="h-[90vh] w-[90vw] border border-gray-500 rounded flex justify-center items-center">
                 <div className="flex flex-col">
                     <h1 className="text-xl font-bold">Apply for {id}</h1>
-                    <h5 className="text-gray-600">Engineering | Remote | Full-time</h5>
+                    <h5 className="text-gray-600">{subRole} | {location} | {jobType}</h5>
 
                     <form action={ApplyAction} className="mt-4 flex flex-col">
                         <span className="flex gap-4">
