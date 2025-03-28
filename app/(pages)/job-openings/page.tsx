@@ -1,4 +1,4 @@
-import JobBlock from "../components/job-block";
+import JobBlock from "@/app/components/job-block";
 
 const JobOpenings=()=>{
     return <>

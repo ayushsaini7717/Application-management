@@ -4,6 +4,10 @@ export default function Home() {
   return (
     <div>
       landing page
+      <div>
+        <h2>Admin?</h2>
+        
+      </div>
     </div>
   );
 }

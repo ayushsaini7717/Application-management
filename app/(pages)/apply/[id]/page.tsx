@@ -1,5 +1,5 @@
 "use server"
-import ApplyAction from "../../actions/Apply";
+import ApplyAction from "../../../actions/Apply";
 const ApplyApplication = async({
     params,
   }: {
