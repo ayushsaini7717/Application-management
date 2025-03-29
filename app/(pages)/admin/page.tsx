@@ -10,7 +10,7 @@ interface scheme{
     mobile: string,
     resumelink: string
 }
-const AdminDashboard=()=>{
+const AdminPage=()=>{
     const router=useRouter();
     const [applications,Setapplication]=useState<scheme[]>([]);
     useEffect(()=>{
@@ -38,7 +38,7 @@ const AdminDashboard=()=>{
                      Log out</button>
                 </div>
             </div>
-            <div className="w-[100%] border border-black shadow-md mt-4">
+            <div className="w-[100%] border border-gray-400 rounded shadow-md mt-4">
                 <div className="text-2xl font-bold pl-1">
                     <h2>Candidate Applications</h2>
                 </div>
@@ -61,7 +61,7 @@ const AdminDashboard=()=>{
                             <div>Software Engineer</div>
                             <div className="flex flex-col place-items-center">
                                 <div>{item.email}</div>
-                                <div>{item.mobile}</div>
+                                <div className="text-gray-500">{item.mobile}</div>
                             </div>
                             <div>30-aug-2025</div>
                             <div>
@@ -80,4 +80,4 @@ const AdminDashboard=()=>{
     </>
 }
 
-export default AdminDashboard;
+export default AdminPage;

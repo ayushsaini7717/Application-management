@@ -11,3 +11,4 @@ export async function GET(req: Request){
         throw new Error("Error in fetching applications.");
     }
 }
+
