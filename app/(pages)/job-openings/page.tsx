@@ -1,7 +1,28 @@
 import BacktohomeBtn from "@/app/custom-components/BacktohomeBtn";
 import JobBlock from "@/app/custom-components/job-block";
 
-const JobOpenings=()=>{
+interface scheme{
+        "id": string,
+        "title": string,
+        "department": string,
+        "location": string,
+        "type": string,
+        "desc": string
+}
+
+const JobOpenings=async ()=>{
+    const res=await fetch("http://localhost:3000/api/fetchJobs",{
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+
+    
+    if(!res.ok){
+        throw new Error("Failed to fetch jobs details!");
+    }
+    const data=await res.json();
     return <>
         <div>
             <div className="mt-2 ml-2">
@@ -16,13 +37,12 @@ const JobOpenings=()=>{
                 </div>
 
                 <div className="grid grid-cols-3 gap-2 mr-2 mt-3">
-                    <JobBlock heading="Software-Engineer" subheading="Engineering" tag1="remote" tag2="full-time" desc="We're looking for a software engineer to join our team and help build our next generation of products."/>
-                    <JobBlock heading="Product-Designer" subheading="Design" tag1="remote" tag2="full-time" desc="Join our design team to create beautiful and intuitive user experiences for our products."/>
-                    <JobBlock heading="Marketing-Manager" subheading="Marketing" tag1="remote" tag2="full-time" desc="Lead our marketing efforts and help us reach new customers and markets."/>
-                    <JobBlock heading="Product-Designer" subheading="Design" tag1="remote" tag2="full-time" desc="Join our design team to create beautiful and intuitive user experiences for our products."/>
-                    <JobBlock heading="Software-Engineer" subheading="Engineering" tag1="remote" tag2="full-time" desc="We're looking for a software engineer to join our team and help build our next generation of products."/>
-                    <JobBlock heading="Marketing-Manager" subheading="Marketing" tag1="remote" tag2="full-time" desc="Lead our marketing efforts and help us reach new customers and markets."/>
-
+                    {data.response.length === 0 ? <div>No jobs available</div>: data.response.map((item:scheme)=>{
+                        return <div className="h-full flex" key={item.id}>
+                            <JobBlock  heading={item.title} subheading={item.department} tag1={item.location} tag2={item.type} desc={item.desc}/>
+                        </div>
+                    })}
+                    
                 </div>
             </div>
             

@@ -11,23 +11,57 @@ interface scheme{
     mobile: string,
     resumelink: string
 }
+
+interface jobScheme{
+    id: string,
+    title: string,
+    department: string,
+    location: string,
+    type: string,
+}
+
+const deletejob=async (id: string)=>{
+    const response=await fetch("api/deletejob",{
+        method: "POST",
+        body: JSON.stringify({
+            id
+        })
+    })
+}
+
 const AdminPage=()=>{
     const router=useRouter();
     const [applications,Setapplication]=useState<scheme[]>([]);
     const [cookie,setcookie]=useState("");
     const [IsApplication,SetIsapplication]=useState(true);
+    const [Jobapplication,SetJobapplications]=useState<jobScheme[]>([]);
+
+    const deleterjob=(id: string)=>{
+        SetJobapplications(Jobapplication.filter((job)=>job.id !== id));
+    }
+
     useEffect(()=>{
         const fetcher=async ()=>{
-            const response=await fetch("/api/fetchcandidate",{
+            const [response1,response2]=await Promise.all([fetch("/api/fetchcandidate",{
+                method: "GET",
+                headers: {
+                    "Content-Type": "applicatin/json"
+                }
+            }),fetch("api/fetchJobs",{
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"
                 }
-            })
+            })]);
 
-            const data=await response.json();
-            Setapplication(data.details);
+            const [data1,data2]=[await response1.json(),await response2.json()];
+            
+            
+
+            Setapplication(data1.details);
+            SetJobapplications(data2.response);
         }
+
         fetcher();
         let isCookie=Cookies.get("user-admin") || "";
         setcookie(isCookie);
@@ -106,15 +140,40 @@ const AdminPage=()=>{
                             </div>
                         </div>
                         <div>
-                        <button onClick={()=>{
-                            router.push("/admin?add-job=true");
-                        }} className="flex mt-2 mr-2 gap-1 border border-white bg-black text-white py-1 px-2 rounded hover:bg-black/80 cursor-pointer">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                            </svg>
-                            Add New Job</button>
+                            <button onClick={()=>{
+                                SetIsapplication(false);
+                                router.push("/admin?add-job=true");
+                            }} className="flex mt-2 mr-2 gap-1 border border-white bg-black text-white py-1 px-2 rounded hover:bg-black/80 cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                                Add New Job</button>
+                        </div>
                     </div>
+
+                    <div className="grid grid-cols-5 mt-3 place-items-center bg-gray-100 font-medium">
+                        <div>Job Title</div>
+                        <div>Department</div>
+                        <div>Location</div>
+                        <div>Type</div>
+                        <div>Action</div>
                     </div>
+                    {Jobapplication.map((item,id)=>{
+                        return <div key={item.id} className="grid grid-cols-5 place-items-center py-2 border-b border-gray-200">
+                            <div className="font-bold">{item.title}</div>
+                            <div>{item.department}</div>
+                            <div>{item.location}</div>
+                            <div>{item.type}</div>
+                            <div className="text-red-500 cursor-pointer">
+                                <svg onClick={()=>{
+                                    deletejob(item.id);
+                                    deleterjob(item.id);
+                                }} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6 cursor-pointer">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                </svg>
+                            </div>
+                        </div>
+                    })}
 
                 {/* <div className="text-2xl font-bold pl-1">
                     <h2>Job Openings</h2>
