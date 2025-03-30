@@ -22,3 +22,12 @@ model application{
   mobile String
   resumelink String
 }
+
+model jobopenings{
+  id String @default(uuid()) @unique
+  title String
+  department String
+  location String
+  type String
+  desc String
+}

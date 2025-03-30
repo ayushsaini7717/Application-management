@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@prisma/client": "^6.5.0",
+    "@radix-ui/react-select": "^2.1.6",
     "appwrite": "^17.0.1",
     "clsx": "^2.1.1",
     "input-otp": "^1.4.2",
