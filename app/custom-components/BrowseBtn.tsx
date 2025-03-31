@@ -1,13 +1,16 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 const BrowseBtn=()=>{
+    const [loading,Setloading]=useState(false);
     const router=useRouter();
     return <>
         <button onClick={()=>{
+                Setloading(true);
                 router.push("/job-openings");
             }}
             className="flex cursor-pointer items-center gap-2 text-white bg-black py-3 px-6 hover:bg-black/80 rounded">
-              <span className="font-semibold">Browse Openings</span>
+              <span className="font-semibold">{loading ? "Please Wait...": "Browse Openings"}</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

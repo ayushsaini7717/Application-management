@@ -1,6 +1,6 @@
 "use server"
 import { PrismaClient } from "@prisma/client";
-// import { NextResponse } from "next/server";
+import { redirect } from "next/navigation";
 import { Client, Storage, ID } from "appwrite";
 const prisma = new PrismaClient();
 
@@ -36,10 +36,10 @@ const ApplyAction=async (formdata : FormData)=>{
                 resumelink: fileUrl
             }
         })
-        // return NextResponse.json({msg: "success",application});
     }catch(err){
         console.log(err);
     }
+    redirect("/success-application");
 }
 
 export default ApplyAction;

@@ -1,6 +1,6 @@
 // "use server"
+import ApplicationSubmitBtn from "@/app/custom-components/applicationSubmitBtn";
 import ApplyAction from "../../../actions/Apply";
-
 
 const ApplyApplication = async(
     {params,searchParams}
@@ -13,11 +13,12 @@ const ApplyApplication = async(
     const subRole = (await searchParams).subRole || "Unknown";
     const location= (await searchParams).location || "Unknown";
     const jobType= (await searchParams).jobType || "Unknown";
+    let Role=id.replace("%20"," ");
     return (
         <div className="h-screen w-screen flex justify-center items-center">
             <div className="h-[90vh] w-[90vw] border border-gray-500 rounded flex justify-center items-center">
                 <div className="flex flex-col">
-                    <h1 className="text-xl font-bold">Apply for {id}</h1>
+                    <h1 className="text-xl font-bold">Apply for {Role}</h1>
                     <h5 className="text-gray-600">{subRole} | {location} | {jobType}</h5>
 
                     <form action={ApplyAction} className="mt-4 flex flex-col">
@@ -37,7 +38,8 @@ const ApplyApplication = async(
                         <input required name="mobile" type="text" className="border border-gray-400 p-2 rounded w-132"></input>
                         <label className="mb-2 mt-2">Resume</label>
                         <input required name="resume" type="file" className="border border-gray-400 p-2 rounded w-132"></input>
-                        <button className="mt-2 text-white bg-black py-1 rounded hover:bg-gray-800" type="submit">Submit</button>
+                        
+                        <ApplicationSubmitBtn/>
                     </form>
                 </div>
             </div>
