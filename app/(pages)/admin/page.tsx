@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 
 interface scheme{
+    id: string,
     Fname: string,
     Lname: string,
     email: string,
@@ -29,6 +30,75 @@ const deletejob=async (id: string)=>{
     })
 }
 
+const Scheduler=async(id: string)=>{
+    const response=await fetch("api/schedule",{
+        method: "POST",
+        body: JSON.stringify({
+            id
+        })
+    })
+}
+
+const Canceller=async(id: string)=>{
+    const response=await fetch("api/cancel",{
+        method: "POST",
+        body: JSON.stringify({
+            id
+        })
+    })
+}
+
+const ScheduleMailer=async (email: string,name: string)=>{
+    const response=await fetch("api/sendmail",{
+        method: "POST",
+        body: JSON.stringify({
+            to: email,
+            subject: `Your Job Appointment is Scheduled`,
+            text: `
+Dear ${name},
+
+We are pleased to inform you that your appointment has been scheduled.
+
+Appointment Details:
+📅 Date: 10 Apr 2025
+⏰ Time: 10 am
+📍 Location: Dwarahat, Almora Uttarakhand
+
+Please bring required documents and be prepared for the discussion. If you have any questions or need to reschedule, feel free to contact us.
+
+We look forward to meeting you!
+
+Best regards,
+CareerPoint
+            `
+        })
+    })
+}
+
+
+
+const CancelMailer=async (email: string,name: string)=>{
+    const response=await fetch("api/sendmail",{
+        method: "POST",
+        body: JSON.stringify({
+            to: email,
+            subject: `Cancellation of Your Job Appointment`,
+            text: `
+Dear ${name},
+
+We regret to inform you that your scheduled appointment has been canceled.
+
+We apologize for any inconvenience this may cause. If necessary, we will reach out to reschedule at a later date. Please feel free to contact us if you have any questions.
+
+Thank you for your understanding.
+
+Best regards,
+CareerPoint
+            `
+        })
+    })
+}
+
 const AdminPage=()=>{
     const router=useRouter();
     const [applications,Setapplication]=useState<scheme[]>([]);
@@ -38,6 +108,9 @@ const AdminPage=()=>{
 
     const deleterjob=(id: string)=>{
         SetJobapplications(Jobapplication.filter((job)=>job.id !== id));
+    }
+    const deleterApplication=(id: string)=>{
+        Setapplication(applications.filter((item)=>item.id !== id));
     }
 
     useEffect(()=>{
@@ -123,8 +196,16 @@ const AdminPage=()=>{
                                 }}>View Resume</button>
                             </div>
                             <div className="flex gap-2">
-                                <button className="text-green-600">Schedule</button>
-                                <button className="text-red-500">Cancel</button>
+                                <button onClick={()=>{
+                                    deleterApplication(item.id);
+                                    Scheduler(item.id);
+                                    ScheduleMailer(item.email,item.Fname);
+                                    }} className="text-green-600 cursor-pointer">Schedule</button>
+                                <button onClick={()=>{
+                                    deleterApplication(item.id);
+                                    Canceller(item.id);
+                                    CancelMailer(item.email,item.Fname);
+                                    }} className="text-red-500 cursor-pointer">Cancel</button>
                             </div>
                         </div>
                     })}
@@ -158,7 +239,7 @@ const AdminPage=()=>{
                         <div>Type</div>
                         <div>Action</div>
                     </div>
-                    {Jobapplication.map((item,id)=>{
+                    {Jobapplication.map((item)=>{
                         return <div key={item.id} className="grid grid-cols-5 place-items-center py-2 border-b border-gray-200">
                             <div className="font-bold">{item.title}</div>
                             <div>{item.department}</div>

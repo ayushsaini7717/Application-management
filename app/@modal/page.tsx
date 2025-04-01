@@ -41,7 +41,7 @@ const ModalComp = () => {
                                 router.push("/admin");
                             }
                         }}
-                        className="bg-black text-white w-full py-2 rounded-md hover:bg-black/80 transition"
+                        className="bg-black text-white cursor-pointer w-full py-2 rounded-md hover:bg-black/80 transition"
                     >
                         Submit
                     </button>

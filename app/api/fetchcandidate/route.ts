@@ -4,7 +4,11 @@ const prisma = new PrismaClient();
 
 export async function GET(req: Request){
     try{
-        const details=await prisma.application.findMany();
+        const details=await prisma.application.findMany({
+            where: {
+                pending: true
+            }
+        });
         return NextResponse.json({msg: "Successfully fetched",details});
     }catch(err){
         console.log(err);

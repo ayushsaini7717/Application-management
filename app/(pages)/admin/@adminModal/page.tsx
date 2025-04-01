@@ -14,13 +14,13 @@ const AdminModal = () => {
                 <form action={AddjobAction} className="flex flex-col gap-4">
                     <div>
                         <label className="block font-bold text-lg">Job Title</label>
-                        <input name="JobTitle" className="w-full border border-gray-200 py-2 px-2 rounded-sm" />
+                        <input required name="JobTitle" className="w-full border border-gray-200 py-2 px-2 rounded-sm" />
                     </div>
 
                     <div className="flex flex-col md:flex-row md:gap-4">
                         <div className="w-full md:w-1/2">
                             <label className="block font-bold text-lg">Department</label>
-                            <Select name="Dept">
+                            <Select name="Dept" required>
                                 <SelectTrigger className="w-full">
                                     <SelectValue placeholder="Select Dept" />
                                 </SelectTrigger>
@@ -44,7 +44,7 @@ const AdminModal = () => {
                     <div className="flex flex-col md:flex-row md:gap-4">
                         <div className="w-full md:w-1/2">
                             <label className="block font-bold text-lg">Type</label>
-                            <Select name="Type">
+                            <Select name="Type" required>
                                 <SelectTrigger className="w-full">
                                     <SelectValue placeholder="Select Type" />
                                 </SelectTrigger>
@@ -58,7 +58,7 @@ const AdminModal = () => {
 
                         <div className="w-full md:w-1/2">
                             <label className="block font-bold text-lg">Description</label>
-                            <input name="desc" className="w-full border border-gray-200 py-2 px-2 rounded-sm" />
+                            <input required name="desc" className="w-full border border-gray-200 py-2 px-2 rounded-sm" />
                         </div>
                     </div>
 

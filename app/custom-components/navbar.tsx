@@ -18,9 +18,12 @@ const Navbar = () => {
         </div>
 
         <ul className="hidden md:flex gap-6 cursor-pointer list-none text-lg">
-          <li>Home</li>
-          <li>Jobs</li>
-          <li>About</li>
+          <li onClick={()=>{
+            router.push("/");
+          }}>Home</li>
+          <li onClick={()=>{
+            router.push("/job-openings");
+          }}>Jobs</li>
           <li
             onClick={() => {
               router.push("?ismodal=true");
