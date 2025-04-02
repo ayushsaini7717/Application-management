@@ -43,7 +43,7 @@ const ApplyApplication = async(
                         <label className="mb-1 font-medium">Resume</label>
                         <input required name="resume" type="file" className="border border-gray-400 p-2 rounded w-full" />
                     </div>
-
+                    <input type="text" readOnly hidden name="role" value={Role}></input>
                     <ApplicationSubmitBtn />
                 </form>
             </div>

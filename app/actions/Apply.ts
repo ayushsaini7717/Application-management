@@ -10,6 +10,7 @@ const ApplyAction=async (formdata : FormData)=>{
     const email=formdata.get("email") as string;
     const mobile = formdata.get("mobile") as string;
     const resume = formdata.get("resume") as File;
+    const Role=formdata.get("role") as string;
 
     try{
 
@@ -33,7 +34,9 @@ const ApplyAction=async (formdata : FormData)=>{
                 Lname: Lname,
                 email: email,
                 mobile: mobile,
-                resumelink: fileUrl
+                resumelink: fileUrl,
+                position: Role,
+                date: new Date().toISOString().split('T')[0]
             }
         })
     }catch(err){

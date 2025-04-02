@@ -21,6 +21,8 @@ model application{
   email String
   mobile String
   resumelink String
+  position String
+  date String
   scheduled Boolean @default(false)
   pending Boolean @default(true)
 }

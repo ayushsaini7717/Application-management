@@ -10,7 +10,9 @@ interface scheme{
     Lname: string,
     email: string,
     mobile: string,
-    resumelink: string
+    resumelink: string,
+    position: string,
+    date: string
 }
 
 interface jobScheme{
@@ -184,12 +186,12 @@ const AdminPage=()=>{
                     {applications.map((item,id)=>{
                         return <div key={id} className="grid grid-cols-6 place-items-center">
                             <div>{item.Fname}</div>
-                            <div>Software Engineer</div>
+                            <div>{item.position}</div>
                             <div className="flex flex-col place-items-center">
                                 <div>{item.email}</div>
                                 <div className="text-gray-500">{item.mobile}</div>
                             </div>
-                            <div>30-aug-2025</div>
+                            <div>{item.date}</div>
                             <div>
                                 <button className="cursor-pointer border border-gray-300 shadow rounded px-2 py-1" onClick={()=>{
                                     router.push(item.resumelink);
