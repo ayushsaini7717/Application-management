@@ -6,9 +6,10 @@ interface Props {
     tag1: string;
     tag2: string;
     desc: string;
+    id: string;
 }
 
-const JobBlock = ({ heading, subheading, tag1, tag2, desc }: Props) => {
+const JobBlock = ({ heading, subheading, tag1, tag2, desc,id }: Props) => {
     return (
         <div className="flex flex-col justify-between border border-black rounded-lg text-black p-4 sm:p-6 md:p-8 w-full max-w-md md:max-w-lg lg:max-w-xl mx-auto shadow-md">
             <div>
@@ -23,7 +24,7 @@ const JobBlock = ({ heading, subheading, tag1, tag2, desc }: Props) => {
                 <p className="text-gray-600 font-medium text-sm sm:text-base">{desc}</p>
             </div>
             <div className="mt-4">
-                <Btn role={heading} subRole={subheading} location={tag1} jobType={tag2} text="Apply Now" />
+                <Btn id={id} role={heading} subRole={subheading} location={tag1} jobType={tag2} text="View Details" />
             </div>
         </div>
     );

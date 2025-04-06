@@ -33,5 +33,45 @@ model jobopenings{
   department String
   location String
   type String
-  desc String
+  short_desc String
+  experience String
+  full_desc String
+  
+  responsibility Responsibilities[]
+  requirement Requirements[]
+  benifit Benifits[]
+  skill Skills[]
+}
+
+model Responsibilities{
+  id String @default(uuid()) @unique
+  responsibility String
+  jobid String
+
+  Job jobopenings @relation(fields: [jobid],references: [id])
+}
+
+model Requirements{
+  id String @default(uuid()) @unique
+  requirement String
+  jobid String
+
+  Job jobopenings @relation(fields: [jobid],references: [id])
+}
+
+
+model Benifits{
+  id String @default(uuid()) @unique
+  benifit String
+
+  jobid String
+  Job jobopenings @relation(fields: [jobid],references: [id])
+}
+
+model Skills{
+  id String @default(uuid()) @unique
+  Skill String
+
+  jobid String
+  Job jobopenings @relation(fields: [jobid],references: [id])
 }

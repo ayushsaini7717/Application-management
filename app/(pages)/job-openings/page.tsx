@@ -7,7 +7,7 @@ interface scheme{
         "department": string,
         "location": string,
         "type": string,
-        "desc": string
+        "short_desc": string
 }
 
 const JobOpenings=async ()=>{
@@ -39,7 +39,7 @@ const JobOpenings=async ()=>{
                 <div className="grid grid-cols-3 gap-2 mr-2 mt-3">
                     {data.response.length === 0 ? <div>No jobs available</div>: data.response.map((item:scheme)=>{
                         return <div className="h-full flex" key={item.id}>
-                            <JobBlock  heading={item.title} subheading={item.department} tag1={item.location} tag2={item.type} desc={item.desc}/>
+                            <JobBlock id={item.id} heading={item.title} subheading={item.department} tag1={item.location} tag2={item.type} desc={item.short_desc}/>
                         </div>
                     })}
                     

@@ -1,21 +1,25 @@
 import ApplicationSubmitBtn from "@/app/custom-components/applicationSubmitBtn";
-import ApplyAction from "../../../actions/Apply";
+import ApplyAction from "../../actions/Apply";
 
 const ApplyApplication = async(
     { params, searchParams }
     : { params: { id: string }; searchParams: { [key: string]: string | string[] | undefined } }
 ) => {
-    const { id } = params;
-    const subRole = searchParams.subRole || "Unknown";
-    const location = searchParams.location || "Unknown";
-    const jobType = searchParams.jobType || "Unknown";
-    let Role = id.replace("%20", " ");
+    const  id  = searchParams.id;
+    const response=await fetch(`${process.env.ROOT_URL}/api/fetchjobdesc?id=${id}`);
+    // const response=await fetch(`http://localhost:3000/api/fetchjobdesc?id=${id}`);
+    const data=await response.json();
+
+    // const subRole = searchParams.subRole || "Unknown";
+    // const location = searchParams.location || "Unknown";
+    // const jobType = searchParams.jobType || "Unknown";
+    // let Role = id.replace("%20", " ");
 
     return (
         <div className="min-h-screen flex justify-center items-center px-4 py-8">
             <div className="max-w-4xl w-full bg-white border border-gray-300 rounded-lg p-6 shadow-lg">
-                <h1 className="text-2xl font-bold text-center">Apply for {Role}</h1>
-                <h5 className="text-gray-600 text-center">{subRole} | {location} | {jobType}</h5>
+                <h1 className="text-2xl font-bold text-center">Apply for {data.basicdetails.title}</h1>
+                <h5 className="text-gray-600 text-center">{data.basicdetails.department} | {data.basicdetails.location} | {data.basicdetails.type}</h5>
 
                 <form action={ApplyAction} className="mt-6 flex flex-col gap-4">
                     <div className="flex flex-col md:flex-row gap-4">
@@ -43,7 +47,7 @@ const ApplyApplication = async(
                         <label className="mb-1 font-medium">Resume</label>
                         <input required name="resume" type="file" className="border border-gray-400 p-2 rounded w-full" />
                     </div>
-                    <input type="text" readOnly hidden name="role" value={Role}></input>
+                    <input type="text" readOnly hidden name="role" value={data.basicdetails.title}></input>
                     <ApplicationSubmitBtn />
                 </form>
             </div>

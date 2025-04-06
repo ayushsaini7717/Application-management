@@ -1,4 +1,5 @@
 import AdminModalhandler from "@/app/handlers/AdminModal";
+import { Toaster } from "@/components/ui/sonner";
 
 export default async function Adminlayout({
     children,
@@ -11,6 +12,7 @@ export default async function Adminlayout({
         <div>
             {children}
             <AdminModalhandler modal={adminModal}/>
+            <Toaster />
         </div>
       );
 }
