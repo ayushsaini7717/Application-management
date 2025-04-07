@@ -1,10 +1,28 @@
-"use server"
+"use server";
+
 import { PrismaClient } from "@prisma/client";
-import { redirect } from "next/navigation";
 import { Client, Storage, ID } from "appwrite";
+import { NextResponse } from "next/server";
 const prisma = new PrismaClient();
 
-const ApplyAction=async (formdata : FormData)=>{
+export async function POST(req: Request){
+    const formdata=await req.formData();
+    const token=formdata.get("token") as string;
+    const secret_key=process.env.NEXT_PUBLIC_RECAPTCHA_SECRET_KEY;
+        
+    const response=await fetch("https://www.google.com/recaptcha/api/siteverify",{
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },body: `secret=${secret_key}&response=${token}`
+    })
+    const data=await response.json();
+
+    if(!data.success){
+        return NextResponse.json({message: "Captcha Failed!"});
+    }
+
+
     const Fname=formdata.get("Fname") as string;
     const Lname=formdata.get("Lname") as string;
     const email=formdata.get("email") as string;
@@ -39,10 +57,11 @@ const ApplyAction=async (formdata : FormData)=>{
                 date: new Date().toISOString().split('T')[0]
             }
         })
+        return NextResponse.json({message: "Successfully Submitted!"});
     }catch(err){
         console.log(err);
+        return NextResponse.json({ message: "Something went wrong!" });
+
     }
-    redirect("/success-application");
 }
 
-export default ApplyAction;
