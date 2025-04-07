@@ -24,7 +24,7 @@ interface jobScheme{
 }
 
 const deletejob=async (id: string)=>{
-    const response=await fetch("api/deletejob",{
+    await fetch("api/deletejob",{
         method: "POST",
         body: JSON.stringify({
             id
@@ -33,7 +33,7 @@ const deletejob=async (id: string)=>{
 }
 
 const Scheduler=async(id: string)=>{
-    const response=await fetch("api/schedule",{
+    await fetch("api/schedule",{
         method: "POST",
         body: JSON.stringify({
             id
@@ -42,7 +42,7 @@ const Scheduler=async(id: string)=>{
 }
 
 const Canceller=async(id: string)=>{
-    const response=await fetch("api/cancel",{
+    await fetch("api/cancel",{
         method: "POST",
         body: JSON.stringify({
             id
@@ -51,7 +51,7 @@ const Canceller=async(id: string)=>{
 }
 
 const ScheduleMailer=async (email: string,name: string)=>{
-    const response=await fetch("api/sendmail",{
+    await fetch("api/sendmail",{
         method: "POST",
         body: JSON.stringify({
             to: email,
@@ -80,7 +80,7 @@ CareerPoint
 
 
 const CancelMailer=async (email: string,name: string)=>{
-    const response=await fetch("api/sendmail",{
+    await fetch("api/sendmail",{
         method: "POST",
         body: JSON.stringify({
             to: email,
@@ -130,8 +130,6 @@ const AdminPage=()=>{
             })]);
 
             const [data1,data2]=[await response1.json(),await response2.json()];
-            
-            
 
             Setapplication(data1.details);
             SetJobapplications(data2.response);

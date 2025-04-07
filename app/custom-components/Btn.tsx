@@ -3,13 +3,9 @@ import { useRouter } from "next/navigation"
 import { useState } from "react";
 interface props{
     text: string,
-    role: string,
-    subRole: string,
-    location: string,
-    jobType: string,
     id: string
 }
-const Btn=({text,role,subRole,location,jobType,id}: props)=>{
+const Btn=({text,id}: props)=>{
     const router=useRouter();
     const [loading,Setloading]=useState(false);
     return <div>

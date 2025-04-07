@@ -37,7 +37,7 @@ const ApplyApplication = () => {
         formdata.append('token',captchaToken);
         
         try{
-            const response=await fetch("/api/apply",{
+            await fetch("/api/apply",{
                 method: "POST",
                 body: formdata
             })
@@ -79,7 +79,7 @@ const ApplyApplication = () => {
 
                     <div className="flex flex-col">
                         <label className="mb-1 font-medium">Phone no</label>
-                        <input required name="mobile" type="text" className="border border-gray-400 p-2 rounded w-full" />
+                        <input required name="mobile" type="tel" pattern="[0-9]{10}" className="border border-gray-400 p-2 rounded w-full" />
                     </div>
 
                     <div className="flex flex-col">

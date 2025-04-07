@@ -1,5 +1,4 @@
 "use client";
-import AddjobAction from "@/app/actions/Addjob";
 import CloseAdminModalBtn from "@/app/custom-components/closeadminModalBtn";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
@@ -34,7 +33,7 @@ interface scheme5{
 }
 
 const jobAdder=async({title,department,location,type,short_desc,experience,full_desc}: scheme1,responsibility: { responsibility: string }[],requirement: {requirement: string}[],benifit: {benifit: string}[],Skill: {Skill: string}[])=>{
-    const response=await fetch("/api/jobadd",{
+    await fetch("/api/jobadd",{
         method: "POST",
         headers: {
             "Content-Type": "application/json"

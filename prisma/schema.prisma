@@ -48,7 +48,7 @@ model Responsibilities{
   responsibility String
   jobid String
 
-  Job jobopenings @relation(fields: [jobid],references: [id])
+  Job jobopenings @relation(fields: [jobid],references: [id],onDelete: Cascade)
 }
 
 model Requirements{
@@ -56,7 +56,7 @@ model Requirements{
   requirement String
   jobid String
 
-  Job jobopenings @relation(fields: [jobid],references: [id])
+  Job jobopenings @relation(fields: [jobid],references: [id],onDelete: Cascade)
 }
 
 
@@ -65,7 +65,7 @@ model Benifits{
   benifit String
 
   jobid String
-  Job jobopenings @relation(fields: [jobid],references: [id])
+  Job jobopenings @relation(fields: [jobid],references: [id],onDelete: Cascade)
 }
 
 model Skills{
@@ -73,5 +73,5 @@ model Skills{
   Skill String
 
   jobid String
-  Job jobopenings @relation(fields: [jobid],references: [id])
+  Job jobopenings @relation(fields: [jobid],references: [id],onDelete: Cascade)
 }

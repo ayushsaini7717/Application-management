@@ -11,18 +11,28 @@ interface scheme{
 }
 
 const JobOpenings=async ()=>{
-    const res=await fetch("http://localhost:3000/api/fetchJobs",{
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
-
-    
-    if(!res.ok){
-        throw new Error("Failed to fetch jobs details!");
+    const rootUrl = process.env.ROOT_URL;
+    let data: { response: scheme[] } = { response: [] };
+    if (!rootUrl) {
+        throw new Error("ROOT_URL environment variable is not set.");
     }
-    const data=await res.json();
+    try{
+        const res=await fetch(`${rootUrl}/api/fetchJobs`,{
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+    
+        
+        if(!res.ok){
+            throw new Error("Failed to fetch jobs details!");
+        }
+        const Data=await res.json();
+        data=Data;
+    }catch(err){
+        console.log(err);
+    }
     return <>
         <div>
             <div className="mt-2 ml-2">
