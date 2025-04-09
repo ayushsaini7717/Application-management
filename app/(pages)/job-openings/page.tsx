@@ -34,30 +34,39 @@ const JobOpenings=async ()=>{
         console.log(err);
     }
     return <>
-        <div>
-            <div className="mt-2 ml-2">
-                <BacktohomeBtn/>
+        <div className="p-4">
+            <div className="max-w-7xl mx-auto">
+                <BacktohomeBtn />
 
-                <div className="mt-[2rem] font-extrabold text-[40px]">
-                    <h1 className="">Career Opportunities</h1>
+                <div className="mt-8 font-extrabold text-3xl sm:text-4xl">
+                <h1>Career Opportunities</h1>
                 </div>
 
-                <div className="font-bold text-gray-500 mr-2 text-[18px]">
-                    <h4>Find your next role and join our team</h4>
+                <div className="font-bold text-gray-500 text-base sm:text-lg mt-2">
+                <h4>Find your next role and join our team</h4>
                 </div>
 
-                <div className="grid grid-cols-3 gap-2 mr-2 mt-3">
-                    {data.response.length === 0 ? <div>No jobs available</div>: data.response.map((item:scheme)=>{
-                        return <div className="h-full flex" key={item.id}>
-                            <JobBlock id={item.id} heading={item.title} subheading={item.department} tag1={item.location} tag2={item.type} desc={item.short_desc}/>
-                        </div>
-                    })}
-                    
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                {data.response.length === 0 ? (
+                    <div>No jobs available</div>
+                ) : (
+                    data.response.map((item: scheme) => (
+                    <div className="h-full flex" key={item.id}>
+                        <JobBlock
+                        id={item.id}
+                        heading={item.title}
+                        subheading={item.department}
+                        tag1={item.location}
+                        tag2={item.type}
+                        desc={item.short_desc}
+                        />
+                    </div>
+                    ))
+                )}
                 </div>
             </div>
-            
-
         </div>
+
     </>
 
 }
