@@ -3,17 +3,9 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-
-interface scheme{
-    id: string,
-    Fname: string,
-    Lname: string,
-    email: string,
-    mobile: string,
-    resumelink: string,
-    position: string,
-    date: string
-}
+import NewApplication from "@/app/custom-components/NewApplication";
+import CancelApplication from "@/app/custom-components/CancelApplication";
+import ScheduledApplication from "@/app/custom-components/ScheduledApplication";
 
 interface jobScheme{
     id: string,
@@ -32,107 +24,32 @@ const deletejob=async (id: string)=>{
     })
 }
 
-const Scheduler=async(id: string)=>{
-    await fetch("api/schedule",{
-        method: "POST",
-        body: JSON.stringify({
-            id
-        })
-    })
-}
-
-const Canceller=async(id: string)=>{
-    await fetch("api/cancel",{
-        method: "POST",
-        body: JSON.stringify({
-            id
-        })
-    })
-}
-
-const ScheduleMailer=async (email: string,name: string)=>{
-    await fetch("api/sendmail",{
-        method: "POST",
-        body: JSON.stringify({
-            to: email,
-            subject: `Your Job Appointment is Scheduled`,
-            text: `
-Dear ${name},
-
-We are pleased to inform you that your appointment has been scheduled.
-
-Appointment Details:
-📅 Date: 10 Apr 2025
-⏰ Time: 10 am
-📍 Location: Dwarahat, Almora Uttarakhand
-
-Please bring required documents and be prepared for the discussion. If you have any questions or need to reschedule, feel free to contact us.
-
-We look forward to meeting you!
-
-Best regards,
-CareerPoint
-            `
-        })
-    })
-}
-
-
-
-const CancelMailer=async (email: string,name: string)=>{
-    await fetch("api/sendmail",{
-        method: "POST",
-        body: JSON.stringify({
-            to: email,
-            subject: `Cancellation of Your Job Appointment`,
-            text: `
-Dear ${name},
-
-We regret to inform you that your scheduled appointment has been canceled.
-
-We apologize for any inconvenience this may cause. If necessary, we will reach out to reschedule at a later date. Please feel free to contact us if you have any questions.
-
-Thank you for your understanding.
-
-Best regards,
-CareerPoint
-            `
-        })
-    })
-}
 
 const AdminPage=()=>{
     const router=useRouter();
-    const [applications,Setapplication]=useState<scheme[]>([]);
     const [cookie,setcookie]=useState("");
     const [IsApplication,SetIsapplication]=useState(true);
     const [Jobapplication,SetJobapplications]=useState<jobScheme[]>([]);
+    const [Page,Setpage]=useState("first");
 
     const deleterjob=(id: string)=>{
         SetJobapplications(Jobapplication.filter((job)=>job.id !== id));
     }
-    const deleterApplication=(id: string)=>{
-        Setapplication(applications.filter((item)=>item.id !== id));
-    }
+    
 
     useEffect(()=>{
         const fetcher=async ()=>{
-            const [response1,response2]=await Promise.all([fetch("/api/fetchcandidate",{
-                method: "GET",
-                headers: {
-                    "Content-Type": "applicatin/json"
-                }
-            }),fetch("api/fetchJobs",{
+            
+
+            const response=await fetch("/api/fetchJobs",{
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"
                 }
-            })]);
+            })
 
-            const [data1,data2]=[await response1.json(),await response2.json()];
-
-            Setapplication(data1.details);
-            SetJobapplications(data2.response);
+            const data=await response.json();
+            SetJobapplications(data.response);
         }
 
         fetcher();
@@ -142,15 +59,15 @@ const AdminPage=()=>{
     if(cookie === "true"){
         return <>
         <div className="px-2">
-            <div className="flex flex-col md:flex-row justify-between mt-2">
-                <h1 className="font-bold text-2xl md:text-3xl pt-4">Admin Dashboard</h1>
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mt-2">
+                <h1 className="font-bold text-2xl md:text-3xl pt-4 md:pt-0">Admin Dashboard</h1>
                 <div className="mt-2 md:mt-0">
                 <button
                     onClick={() => {
                     Cookies.remove("user-admin");
                     router.push("/");
                     }}
-                    className="px-3 py-2 hover:bg-gray-200 rounded cursor-pointer flex gap-2 items-center"
+                    className="flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-200"
                 >
                     <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -171,126 +88,90 @@ const AdminPage=()=>{
                 </div>
             </div>
 
-            <div className="flex flex-wrap mt-3 font-bold gap-2 bg-gray-100 w-fit px-2 py-3 rounded">
-                <div>
+            <div className="flex flex-wrap mt-4 gap-2 bg-gray-100 w-fit px-2 py-3 rounded font-bold">
                 <button
-                    className={`cursor-pointer ${IsApplication ? "bg-white px-2 rounded" : "bg-gray-100"}`}
-                    onClick={() => SetIsapplication(true)}
+                className={`cursor-pointer px-2 py-1 rounded ${
+                    IsApplication ? "bg-white" : "bg-gray-100"
+                }`}
+                onClick={() => SetIsapplication(true)}
                 >
-                    Applications
+                Applications
                 </button>
-                </div>
-                <div>
                 <button
-                    className={`cursor-pointer ${!IsApplication ? "bg-white px-2 rounded" : "bg-gray-100"}`}
-                    onClick={() => SetIsapplication(false)}
+                className={`cursor-pointer px-2 py-1 rounded ${
+                    !IsApplication ? "bg-white" : "bg-gray-100"
+                }`}
+                onClick={() => SetIsapplication(false)}
                 >
-                    Job openings
+                Job openings
                 </button>
-                </div>
             </div>
 
             {IsApplication ? (
-                <div className="w-full border border-gray-400 rounded shadow-md mt-4">
-                <div className="text-2xl font-bold pl-1">
-                    <h2>Candidate Applications</h2>
-                </div>
-                <div className="text-md font-medium text-gray-600 pl-1">
-                    <h4>View and manage all job applications.</h4>
+                <div className="w-full border border-gray-300 rounded shadow-md mt-4 p-2 cursor-pointer">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
+                    <h2 className="text-2xl font-bold">Candidate Applications</h2>
+                    <div className="flex gap-4 text-lg mt-2 md:mt-0">
+                    {[
+                        { label: "Pending", page: "first", color: "text-yellow-500" },
+                        { label: "Cancelled", page: "second", color: "text-red-500" },
+                        { label: "Scheduled", page: "third", color: "text-green-500" },
+                    ].map(({ label, page, color }) => (
+                        <button
+                            key={page}
+                            onClick={() => Setpage(page)}
+                            className={`
+                                px-4 py-2 rounded-md border
+                                transition-all duration-300
+                                ${Page === page ? `${color} border-current` : "text-gray-700 border-transparent hover:border-gray-300 hover:text-black"}
+                            `}
+                            >
+                            {label}
+                        </button>
+                    ))}
+                    </div>
+
                 </div>
 
-                <div className="hidden md:grid grid-cols-6 mt-3 place-items-center bg-gray-100 text-center font-semibold">
-                    <div className="py-2">Candidate</div>
-                    <div className="py-2">Position</div>
-                    <div className="py-2">Contact</div>
-                    <div className="py-2">Applied</div>
-                    <div className="py-2">Resume</div>
-                    <div className="py-2">Action</div>
-                </div>
+                <p className="text-md font-medium text-gray-600 mt-1">View and manage all job applications.</p>
 
-                {applications.map((item, id) => (
-                    <div key={id} className="grid grid-cols-1 md:grid-cols-6 place-items-center text-center py-2 border-b border-gray-200">
-                    <div>{item.Fname}</div>
-                    <div>{item.position}</div>
-                    <div className="flex flex-col items-center">
-                        <div>{item.email}</div>
-                        <div className="text-gray-500">{item.mobile}</div>
-                    </div>
-                    <div>{item.date}</div>
-                    <div>
-                        <button
-                        className="cursor-pointer border border-gray-300 shadow rounded px-2 py-1"
-                        onClick={() => {
-                            router.push(item.resumelink);
-                        }}
-                        >
-                        View Resume
-                        </button>
-                    </div>
-                    <div className="flex gap-2">
-                        <button
-                        onClick={() => {
-                            deleterApplication(item.id);
-                            Scheduler(item.id);
-                            ScheduleMailer(item.email, item.Fname);
-                        }}
-                        className="text-green-600 cursor-pointer"
-                        >
-                        Schedule
-                        </button>
-                        <button
-                        onClick={() => {
-                            deleterApplication(item.id);
-                            Canceller(item.id);
-                            CancelMailer(item.email, item.Fname);
-                        }}
-                        className="text-red-500 cursor-pointer"
-                        >
-                        Cancel
-                        </button>
-                    </div>
-                    </div>
-                ))}
+                <div className="mt-4">
+                    {Page === "first" ? <NewApplication /> : Page === "second" ? <CancelApplication /> : <ScheduledApplication />}
+                </div>
                 </div>
             ) : (
-                <div className="w-full border border-gray-400 rounded shadow-md mt-4">
-                <div className="flex flex-col md:flex-row justify-between">
-                    <div className="flex flex-col text-md font-medium text-gray-600 pl-1">
-                    <div className="text-2xl font-bold pl-1 text-black">
-                        <h2>Job Openings</h2>
-                    </div>
+                <div className="w-full border border-gray-300 rounded shadow-md mt-4 p-2">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
                     <div>
-                        <h4>Manage your current job listings.</h4>
+                    <h2 className="text-2xl font-bold text-black">Job Openings</h2>
+                    <p className="text-md font-medium text-gray-600">Manage your current job listings.</p>
                     </div>
-                    </div>
-                    <div className="mt-2 md:mt-0">
                     <button
-                        onClick={() => {
+                    onClick={() => {
                         SetIsapplication(false);
                         router.push("/admin?add-job=true");
-                        }}
-                        className="flex items-center gap-1 border border-white bg-black text-white py-2 px-3 rounded hover:bg-black/80 cursor-pointer"
+                    }}
+                    className="flex items-center gap-2 bg-black text-white py-2 px-4 rounded hover:bg-black/80 mt-3 md:mt-0"
                     >
-                        <svg
+                    <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
                         strokeWidth="1.5"
                         stroke="currentColor"
                         className="w-6 h-6"
-                        >
+                    >
                         <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                         />
-                        </svg>
-                        Add New Job
+                    </svg>
+                    Add New Job
                     </button>
-                    </div>
                 </div>
 
-                <div className="hidden md:grid grid-cols-5 mt-3 place-items-center bg-gray-100 font-medium">
+                <div className="hidden md:grid grid-cols-5 place-items-center mt-3 bg-gray-100 py-2 font-medium">
                     <div>Job Title</div>
                     <div>Department</div>
                     <div>Location</div>
@@ -299,7 +180,10 @@ const AdminPage=()=>{
                 </div>
 
                 {Jobapplication.map((item) => (
-                    <div key={item.id} className="grid grid-cols-1 md:grid-cols-5 place-items-center text-center py-2 border-b border-gray-200">
+                    <div
+                    key={item.id}
+                    className="grid grid-cols-1 md:grid-cols-5 place-items-center text-center py-3 border-b border-gray-200"
+                    >
                     <div className="font-bold">{item.title}</div>
                     <div>{item.department}</div>
                     <div>{item.location}</div>
@@ -315,7 +199,7 @@ const AdminPage=()=>{
                         viewBox="0 0 24 24"
                         strokeWidth="1.5"
                         stroke="currentColor"
-                        className="w-6 h-6 cursor-pointer"
+                        className="w-6 h-6"
                         >
                         <path
                             strokeLinecap="round"
@@ -329,6 +213,7 @@ const AdminPage=()=>{
                 </div>
             )}
             </div>
+
 
     </>
     }
