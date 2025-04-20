@@ -179,6 +179,7 @@ const AdminPage=()=>{
                     <div>Action</div>
                 </div>
 
+                
                 {Jobapplication.map((item) => (
                     <div
                     key={item.id}

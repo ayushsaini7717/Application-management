@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Pagination from "./Pagination";
 
 interface Scheme {
   id: string;
@@ -19,6 +20,18 @@ interface Scheme {
 const CancelApplication = () => {
   const router = useRouter();
   const [applications, Setapplication] = useState<Scheme[]>([]);
+  const [currentPage,SetcurrentPage]=useState(1);
+  const [paginatingApplication,SetPaginatingApplication]=useState<Scheme[]>([]);
+  const [maxPage,SetmaxPage]=useState(0);
+
+
+  const PaginatingFunction=(arr:Scheme[],currpage:number,pagesize:number)=>{
+      let start=(currpage-1)*pagesize;
+      let end=start+pagesize;
+
+      return arr.slice(start,end);
+  }
+
 
   useEffect(() => {
     const fetcher = async () => {
@@ -30,9 +43,17 @@ const CancelApplication = () => {
       });
       const data = await res.json();
       Setapplication(data.res);
+      SetmaxPage(Math.ceil(data.res.length / 5));
     };
     fetcher();
   }, []);
+
+
+  useEffect(()=>{
+    let temp=PaginatingFunction(applications,currentPage,5);
+    console.log(temp);
+    SetPaginatingApplication(temp);
+},[currentPage,applications]);
 
   return (
     <div className="p-4">
@@ -45,7 +66,7 @@ const CancelApplication = () => {
         <div className="py-2">Emails</div>
       </div>
 
-      {applications.map((item, id) => (
+      {paginatingApplication.map((item, id) => (
         <div
           key={id}
           className="grid grid-cols-1 md:grid-cols-6 gap-4 place-items-center text-center py-4 border-b border-gray-200"
@@ -87,6 +108,13 @@ const CancelApplication = () => {
           </div>
         </div>
       ))}
+
+
+      <Pagination 
+         currentPage={currentPage} 
+         onPagefunction={SetcurrentPage} 
+         maxPage={maxPage} 
+      />
     </div>
   );
 };

@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Pagination from "./Pagination";
 
 interface scheme{
     id: string,
@@ -89,9 +90,21 @@ const Canceller=async(id: string)=>{
 const NewApplication=()=>{
     const router=useRouter();
     const [application,Setapplication]=useState<scheme[]>([]);
+    const [currentPage,SetcurrentPage]=useState(1);
+    const [paginatingApplication,SetPaginatingApplication]=useState<scheme[]>([]);
+    const [maxPage,SetmaxPage]=useState(0);
 
     const deleterApplication=(id: string)=>{
         Setapplication(application.filter((item)=>item.id !== id));
+    }
+
+    
+
+    const PaginatingFunction=(arr:scheme[],currpage:number,pagesize:number)=>{
+        let start=(currpage-1)*pagesize;
+        let end=start+pagesize;
+
+        return arr.slice(start,end);
     }
 
     useEffect(()=>{
@@ -105,9 +118,16 @@ const NewApplication=()=>{
 
             const data=await response.json();
             Setapplication(data.details);
+            SetmaxPage(Math.ceil(data.details.length / 5));
         }
         fetcher();
     },[])
+
+    useEffect(()=>{
+        let temp=PaginatingFunction(application,currentPage,5);
+        console.log(temp);
+        SetPaginatingApplication(temp);
+    },[currentPage,application]);
     return <div>
         <div className="hidden md:grid grid-cols-6 mt-3 place-items-center bg-gray-100 text-center font-semibold">
             <div className="py-2">Candidate</div>
@@ -117,7 +137,7 @@ const NewApplication=()=>{
             <div className="py-2">Resume</div>
             <div className="py-2">Action</div>
         </div>
-        {application.map((item, id) => (
+        {paginatingApplication.map((item, id) => (
                     <div key={id} className="grid grid-cols-1 md:grid-cols-6 place-items-center text-center py-2 border-b border-gray-200">
                     <div>{item.Fname}</div>
                     <div>{item.position}</div>
@@ -160,6 +180,14 @@ const NewApplication=()=>{
                     </div>
                     </div>
                 ))}
+                
+                <Pagination 
+                currentPage={currentPage} 
+                onPagefunction={SetcurrentPage} 
+                maxPage={maxPage} 
+                />
+
+
     </div>
 }
 
