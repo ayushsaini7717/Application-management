@@ -129,21 +129,33 @@ const NewApplication=({SearchCandidate,SearchBy}: NewApplicationProps)=>{
         fetcher();
     },[])
 
-    useEffect(()=>{      
-        if(SearchCandidate.length !== 0){
-            const searchItem=SearchCandidate.toLowerCase();
-            const response=application.filter((item)=>{
-                const currItem=SearchBy === "Name" ? item.Fname.toLowerCase() : SearchBy === "Mob" ? item.mobile.toLowerCase() : SearchBy === "Email" ? item.email.toLowerCase() : item.position.toLowerCase();
+
+    useEffect(() => {
+        if (SearchCandidate.length !== 0) {
+            const searchItem = SearchCandidate.toLowerCase();
+            const response = application.filter((item) => {
+                const currItem = 
+                    SearchBy === "Name" ? item.Fname.toLowerCase() : 
+                    SearchBy === "Mob" ? item.mobile.toLowerCase() : 
+                    SearchBy === "Email" ? item.email.toLowerCase() : 
+                    item.position.toLowerCase();
                 return currItem.includes(searchItem);
-            })
-            let Max_page=SearchCandidate.length === 0 ? Math.ceil(application.length/5) : Math.ceil(response.length/5);
+            });
+            let Max_page = Math.ceil(response.length / 5);
             SetmaxPage(Max_page);
             SetSearchCandidatesList(response);
-        }   
-        let temp=SearchCandidate.length===0 ? PaginatingFunction(application,currentPage,5) : PaginatingFunction(SearchedCandidateList,currentPage,5);
-        console.log(temp);
-        SetPaginatingApplication(temp);
-    },[currentPage,application,SearchCandidate]);
+    
+            const temp = PaginatingFunction(response, currentPage, 5);
+            SetPaginatingApplication(temp);
+        } else {
+            let Max_page = Math.ceil(application.length / 5);
+            SetmaxPage(Max_page);
+    
+            const temp = PaginatingFunction(application, currentPage, 5);
+            SetPaginatingApplication(temp);
+        }
+    }, [currentPage, application, SearchCandidate, SearchBy]);
+    
     return <div>
         <div className="hidden md:grid grid-cols-6 mt-3 place-items-center bg-gray-100 text-center font-semibold">
             <div className="py-2">Candidate</div>
