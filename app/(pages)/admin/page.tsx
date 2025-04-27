@@ -161,7 +161,7 @@ const AdminPage=()=>{
                 <p className="text-md font-medium text-gray-600 mt-1">View and manage all job applications.</p>
 
                 <div className="mt-4">
-                    {Page === "first" ? <NewApplication SearchCandidate={SearchCandidate} SearchBy={SearchBy}/> : Page === "second" ? <CancelApplication SearchCandidate={SearchCandidate} SearchBy={SearchBy}/> : <ScheduledApplication SearchCandidate={SearchCandidate}/>}
+                    {Page === "first" ? <NewApplication SearchCandidate={SearchCandidate} SearchBy={SearchBy}/> : Page === "second" ? <CancelApplication SearchCandidate={SearchCandidate} SearchBy={SearchBy}/> : <ScheduledApplication SearchCandidate={SearchCandidate} SearchBy={SearchBy}/>}
                 </div>
                 </div>
             ) : (
