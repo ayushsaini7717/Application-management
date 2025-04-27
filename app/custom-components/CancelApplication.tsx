@@ -17,13 +17,19 @@ interface Scheme {
   pending: boolean;
 }
 
-const CancelApplication = () => {
+interface CancelApplicationProps{
+  SearchCandidate: string,
+  SearchBy: string
+}
+
+const CancelApplication = ({SearchCandidate,SearchBy}: CancelApplicationProps) => {
   const router = useRouter();
   const [applications, Setapplication] = useState<Scheme[]>([]);
   const [currentPage,SetcurrentPage]=useState(1);
   const [paginatingApplication,SetPaginatingApplication]=useState<Scheme[]>([]);
   const [maxPage,SetmaxPage]=useState(0);
-
+  const [SearchedCandidateList,SetSearchCandidatesList]=useState<Scheme[]>([]);
+  
 
   const PaginatingFunction=(arr:Scheme[],currpage:number,pagesize:number)=>{
       let start=(currpage-1)*pagesize;
@@ -43,20 +49,31 @@ const CancelApplication = () => {
       });
       const data = await res.json();
       Setapplication(data.res);
-      SetmaxPage(Math.ceil(data.res.length / 5));
+      // SetmaxPage(Math.ceil(data.res.length / 5));
     };
     fetcher();
   }, []);
 
 
-  useEffect(()=>{
-    let temp=PaginatingFunction(applications,currentPage,5);
+  useEffect(()=>{      
+    if(SearchCandidate.length !== 0){
+        const searchItem=SearchCandidate.toLowerCase();
+        const response=applications.filter((item)=>{
+          const currItem=SearchBy === "Name" ? item.Fname.toLowerCase() : SearchBy === "Mob" ? item.mobile.toLowerCase() : SearchBy === "Email" ? item.email.toLowerCase() : item.position.toLowerCase();
+          return currItem.includes(searchItem);
+        })
+
+        let Max_page=SearchCandidate.length === 0 ? Math.ceil(applications.length/5) : Math.ceil(response.length/5);
+        SetmaxPage(Max_page);
+        SetSearchCandidatesList(response);
+    }   
+    let temp=SearchCandidate.length===0 ? PaginatingFunction(applications,currentPage,5) : PaginatingFunction(SearchedCandidateList,currentPage,5);
     console.log(temp);
     SetPaginatingApplication(temp);
-},[currentPage,applications]);
+},[currentPage,applications,SearchCandidate]);
 
   return (
-    <div className="p-4">
+    <div>
       <div className="hidden md:grid grid-cols-6 mt-3 place-items-center bg-gray-100 text-center font-semibold rounded-md">
         <div className="py-2">Candidate</div>
         <div className="py-2">Position</div>
@@ -66,7 +83,7 @@ const CancelApplication = () => {
         <div className="py-2">Emails</div>
       </div>
 
-      {paginatingApplication.map((item, id) => (
+      {paginatingApplication.length === 0?<div className="flex justify-center items-center pt-8 font-semibold">No Candidates found!</div> : paginatingApplication.map((item, id) => (
         <div
           key={id}
           className="grid grid-cols-1 md:grid-cols-6 gap-4 place-items-center text-center py-4 border-b border-gray-200"

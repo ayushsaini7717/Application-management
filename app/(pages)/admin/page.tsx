@@ -6,6 +6,8 @@ import Cookies from "js-cookie";
 import NewApplication from "@/app/custom-components/NewApplication";
 import CancelApplication from "@/app/custom-components/CancelApplication";
 import ScheduledApplication from "@/app/custom-components/ScheduledApplication";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Value } from "@radix-ui/react-select";
 
 interface jobScheme{
     id: string,
@@ -31,11 +33,15 @@ const AdminPage=()=>{
     const [IsApplication,SetIsapplication]=useState(true);
     const [Jobapplication,SetJobapplications]=useState<jobScheme[]>([]);
     const [Page,Setpage]=useState("first");
+    const [SearchCandidate,SetSearchCandidate]=useState("");
+    const [SearchBy,SetSearchBy]=useState("Name");
+
 
     const deleterjob=(id: string)=>{
         SetJobapplications(Jobapplication.filter((job)=>job.id !== id));
     }
     
+   
 
     useEffect(()=>{
         const fetcher=async ()=>{
@@ -111,6 +117,25 @@ const AdminPage=()=>{
                 <div className="w-full border border-gray-300 rounded shadow-md mt-4 p-2 cursor-pointer">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
                     <h2 className="text-2xl font-bold">Candidate Applications</h2>
+                    <div className="flex gap-3">
+                        <div>
+                            <Select onValueChange={(value)=>SetSearchBy(value)}>
+                                <SelectTrigger className="w-[120px]">
+                                    <SelectValue placeholder="Search by-" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="Name">Name</SelectItem>
+                                    <SelectItem value="Email">Email</SelectItem>
+                                    <SelectItem value="Position">Position</SelectItem>
+                                    <SelectItem value="Mob">Mob</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                        <input onChange={(e)=>{
+                            SetSearchCandidate(e.target.value);
+                        }} placeholder="Search" className="w-[400px] border-2 border-gray-300 rounded py-1 pl-2 text-gray-600"></input>
+                    </div>
                     <div className="flex gap-4 text-lg mt-2 md:mt-0">
                     {[
                         { label: "Pending", page: "first", color: "text-yellow-500" },
@@ -136,7 +161,7 @@ const AdminPage=()=>{
                 <p className="text-md font-medium text-gray-600 mt-1">View and manage all job applications.</p>
 
                 <div className="mt-4">
-                    {Page === "first" ? <NewApplication /> : Page === "second" ? <CancelApplication /> : <ScheduledApplication />}
+                    {Page === "first" ? <NewApplication SearchCandidate={SearchCandidate} SearchBy={SearchBy}/> : Page === "second" ? <CancelApplication SearchCandidate={SearchCandidate} SearchBy={SearchBy}/> : <ScheduledApplication SearchCandidate={SearchCandidate}/>}
                 </div>
                 </div>
             ) : (

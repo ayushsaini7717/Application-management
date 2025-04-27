@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "./custom-components/navbar";
 import ModalHandler from "./handlers/RootModal";
 import { Suspense } from "react";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -32,11 +33,13 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Suspense fallback={<div>Loading...</div>}>
-          <Navbar/>
-          {children}
-          <ModalHandler modal={modal}/>
-        </Suspense>
+        
+          <Suspense fallback={<div>Loading...</div>}>
+            <Navbar/>
+            {children}
+            <ModalHandler modal={modal}/>
+          </Suspense>
+        
       </body>
     </html>
   );
