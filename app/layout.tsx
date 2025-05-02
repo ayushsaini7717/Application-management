@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "./custom-components/navbar";
 import ModalHandler from "./handlers/RootModal";
 import { Suspense } from "react";
+import SessionWrapper from "./providers/SessionWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,10 +24,11 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children,
   modal,
+  session,
 }: Readonly<{
   children: React.ReactNode;
   modal: React.ReactNode;
-  
+  session: any;
 }>) {
   return (
     <html lang="en">
@@ -35,9 +37,11 @@ export default async function RootLayout({
       >
         
           <Suspense fallback={<div>Loading...</div>}>
-            <Navbar/>
-            {children}
-            <ModalHandler modal={modal}/>
+            <SessionWrapper session={session}>
+              <Navbar/>
+              {children}
+              <ModalHandler modal={modal}/>
+            </SessionWrapper>
           </Suspense>
         
       </body>
