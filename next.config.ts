@@ -1,11 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   experimental: {
     serverActions: {
       bodySizeLimit: '2mb',
     },
+  },
+  env: {
+    NEXTAUTH_SECRET: "eScyBMOwp/Kuv6MVCkGB9Or0P79QCzvu1AoJwsCISAc=", 
   },
 };
 
