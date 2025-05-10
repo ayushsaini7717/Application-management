@@ -3,13 +3,30 @@
 import { PrismaClient } from "@prisma/client";
 import { Client, Storage, ID } from "appwrite";
 import { NextResponse } from "next/server";
+import { authOptions } from "@/lib/auth";
+import { getServerSession } from "next-auth";
+
 const prisma = new PrismaClient();
 
 export async function POST(req: Request){
+    const session=await getServerSession(authOptions);
     const formdata=await req.formData();
     const token=formdata.get("token") as string;
     const secret_key=process.env.NEXT_PUBLIC_RECAPTCHA_SECRET_KEY;
-        
+    
+    let UserId: string | null=null;
+
+    if(session?.user?.email){
+        const user=await prisma.user.findFirst({
+            where:{
+                email: session.user?.email
+            }
+        })
+        if(user){
+            UserId=user.id;
+        }
+    }
+
     const response=await fetch("https://www.google.com/recaptcha/api/siteverify",{
         method: "POST",
         headers: {
@@ -54,7 +71,8 @@ export async function POST(req: Request){
                 mobile: mobile,
                 resumelink: fileUrl,
                 position: Role,
-                date: new Date().toISOString().split('T')[0]
+                date: new Date().toISOString().split('T')[0],
+                UserId: UserId
             }
         })
         return NextResponse.json({message: "Successfully Submitted!"});

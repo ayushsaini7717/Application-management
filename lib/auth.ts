@@ -1,7 +1,12 @@
 import GitHubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+import { PrismaClient } from "@prisma/client";
+import type { User } from "next-auth";
+import { redirect } from "next/navigation";
+import bcrypt from "bcryptjs";
 
+const prisma = new PrismaClient();
 export const authOptions = {
   providers: [
     GitHubProvider({
@@ -15,18 +20,41 @@ export const authOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "jsmith" },
+        username: { label: "Email", type: "email", placeholder: "Enter your email" },
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        // In a real app, you would query your database here
-        const user = { id: "1", name: "Ayush", email: "ayushsaini7717@gmail.com" }
-        
-        if (credentials?.username === user.name && credentials.password === "abcd") {
-          return user;
+        const user=await prisma.user.findFirst({
+          where: {
+            email: credentials?.username,
+          }
+        })
+        if(user){
+          const verify=await bcrypt.compare(credentials?.password!,user?.password);
+          if (verify) {
+            return user;
+          }
         }
         return null;
       }
     })
   ],
+  pages: {
+    signIn: "/signup"
+  },
+  callbacks: {
+    async signIn({ user }: { user: User }) {
+      if (!user.email) return false;
+
+      const existingUser = await prisma.user.findUnique({
+        where: { email: user.email },
+      });
+
+      if (!existingUser) {
+        redirect("/signup");
+      }
+
+      return true;
+    },
+  },
 };

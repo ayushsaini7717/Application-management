@@ -12,7 +12,12 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
+model User{
+  id String @default(uuid()) @unique
+  email String @unique
+  password String
+  Application application[]
+}
 
 model application{
   id String @default(uuid()) @unique
@@ -25,6 +30,9 @@ model application{
   date String
   scheduled Boolean @default(false)
   pending Boolean @default(true)
+
+  UserId String?
+  user User? @relation(fields: [UserId],references: [id])
 }
 
 model jobopenings{

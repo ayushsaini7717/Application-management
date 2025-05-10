@@ -37,21 +37,26 @@ const Navbar = () => {
           <li onClick={() => router.push("?ismodal=true")}>Admin?</li>
         </ul>
 
-        {session ? (
-          <button
-            onClick={() => signOut()}
-            className="hidden md:block cursor-pointer text-white bg-black px-4 py-2 rounded hover:bg-black/80"
-          >
-            Sign out
-          </button>
-        ) : (
-          <button
-            onClick={() => router.push("/api/auth/signin")}
-            className="hidden md:block cursor-pointer text-white bg-black px-4 py-2 rounded hover:bg-black/80"
-          >
-            Sign in
-          </button>
-        )}
+        <div className="flex gap-1">
+          
+
+
+          {session ? (
+            <button
+              onClick={() => signOut()}
+              className="hidden md:block cursor-pointer text-white bg-black px-4 py-2 rounded hover:bg-black/80"
+            >
+              Sign out
+            </button>
+          ) : (
+            <button
+              onClick={() => router.push("/api/auth/signin")}
+              className="hidden md:block cursor-pointer text-white bg-black px-4 py-2 rounded hover:bg-black/80"
+            >
+              Sign in
+            </button>
+          )}
+        </div>
 
         <button className="md:hidden text-2xl" onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <FiX /> : <FiMenu />}
