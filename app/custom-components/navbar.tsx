@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FiMenu, FiX } from "react-icons/fi";
 import { useSession, signOut } from "next-auth/react";
+import '../../styles/underlineGradient.css'
 
 const Navbar = () => {
   const router = useRouter();
@@ -11,7 +12,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="flex justify-between items-center px-4 py-2 shadow h-[4rem] bg-white">
+      <div className="flex justify-between items-center px-4 py-2 shadow h-[4rem] underlineGradient">
         <div className="flex gap-1 items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"

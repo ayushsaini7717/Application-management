@@ -9,7 +9,7 @@ const BrowseBtn=()=>{
                 Setloading(true);
                 router.push("/job-openings");
             }}
-            className="flex cursor-pointer items-center gap-2 text-white bg-black py-3 px-6 hover:bg-black/80 rounded">
+            className="flex cursor-pointer items-center gap-2 text-purple-500 bg-white py-3 px-6 hover:bg-gray-200 rounded">
               <span className="font-semibold">{loading ? "Please Wait...": "Browse Openings"}</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"

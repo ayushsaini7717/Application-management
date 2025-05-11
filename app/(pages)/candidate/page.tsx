@@ -29,8 +29,25 @@
 
 //   return null; 
 // }
+import JobCard from "@/app/custom-components/JobCard";
+import NavigateBtn from "@/app/custom-components/navigateBtn";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
+import "../../../styles/underlineGradient.css";
+
+interface applicationSchema{
+  id: string,
+  Fname: string,
+  Lname: string,
+  email: string,
+  mobile: string,
+  resumelink: string,
+  position: string,
+  date: string,
+  scheduled: boolean,
+  pending: boolean,
+  UserId: string
+}
 
 const Candidatepage=async ()=>{
   const session=await getServerSession(authOptions);
@@ -39,9 +56,37 @@ const Candidatepage=async ()=>{
     return <div>You are out of session</div>
   }
 
-  // return <div>Candidate page</div>
+  const applications=await fetch(`${process.env.ROOT_URL}/api/myjobs?email=${session.user?.email}`,{
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }
+)
+
+  const data=await applications.json();
+  
   return <div>
-    
+    <div className="flex justify-between">
+      <div className="flex flex-col gap-2 pl-2 pt-2">
+        <div className="flex flex-col">
+          <div className="font-bold text-2xl">My Applications</div>
+          <div className="underlineGradient ml-7 w-[100px] h-1 rounded"></div>
+        </div>
+        <div className="text-gray-500">Track and manage your job applications</div>
+      </div>
+      <div className="mt-2 mr-2">
+        <NavigateBtn path="/job-openings" text="Browse Jobs"></NavigateBtn>
+      </div>
+    </div>
+
+    <div className="bg-white">
+      {data.applications.map((item:applicationSchema,i:number)=>{
+        return <div key={i}>
+          <JobCard position={item.position} date={item.date} scheduled={item.scheduled} pending={item.pending}/>
+        </div>
+      })}
+    </div>
   </div>
 }
 

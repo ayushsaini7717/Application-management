@@ -1,34 +1,40 @@
 import BrowseBtn from "./custom-components/BrowseBtn";
+import '../styles/gradientAnimation.css';
+import '../styles/underlineGradient.css';
 
 export default function Home() {
   return (
     <>
       <div className=" h-screen">
-        <div className="bg-gray-50 pt-10">
-          <div className="flex flex-col items-center text-center mt-10 px-4">
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold">
-              Find Your Dream Job Today
-            </h1>
-            <h3 className="text-lg md:text-xl lg:text-2xl font-medium text-gray-500 max-w-2xl mt-2">
-              Join our team of passionate professionals and build your career with us. We offer
-              exciting opportunities across various fields.
-            </h3>
+        <div className="bg-gray-50">
+          <div className="gradient-animated pb-20">
+            <div className="flex flex-col items-center text-center pt-10 px-4">
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white">
+                Find Your Dream Job Today
+              </h1>
+              <h3 className="text-lg md:text-xl lg:text-2xl font-medium max-w-2xl mt-2 text-white">
+                Join our team of passionate professionals and build your career with us. We offer
+                exciting opportunities across various fields.
+              </h3>
+            </div>
+
+            <div className="flex flex-col md:flex-row items-center justify-center gap-4 mt-10">
+              <BrowseBtn/>
+              <button className="border cursor-pointer hover:bg-black/5 bg-red-500 text-white border-gray-400 rounded px-4 py-2 font-semibold">
+                Learn About Us
+              </button>
+            </div>
+
           </div>
 
-          <div className="flex flex-col md:flex-row items-center justify-center gap-4 mt-10">
-            <BrowseBtn/>
-            <button className="border cursor-pointer hover:bg-black/5 border-gray-400 rounded px-4 py-2 font-semibold">
-              Learn About Us
-            </button>
-          </div>
-
-          <div className="mt-20 text-center">
+          <div className="mt-20 text-center flex flex-col">
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold">Why Join Our Team?</h2>
+            <div className="rootUnderline ml-7 w-[100px] self-center h-1 rounded"></div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4 sm:px-8 md:px-12 lg:px-16 mt-12 pb-20">
             <div className="flex flex-col items-center gap-2">
-              <div className="p-4 bg-black/10 rounded-full w-fit">
+              <div className="p-4 bg-black/10 rounded-full w-fit svgBackground">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -54,7 +60,7 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col items-center gap-2">
-              <div className="p-4 bg-black/10 rounded-full w-fit">
+              <div className="p-4 bg-black/10 rounded-full w-fit svgBackground">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -80,7 +86,7 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col items-center gap-2">
-              <div className="p-4 bg-black/10 rounded-full w-fit">
+              <div className="p-4 bg-black/10 rounded-full w-fit svgBackground">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
