@@ -13,7 +13,7 @@ const JobBlock = ({ heading, subheading, tag1, tag2, desc,id }: Props) => {
     return (
         <div className="flex flex-col justify-between border border-gray-200 rounded-xl text-gray-800 p-4 sm:p-6 md:p-8 w-full max-w-md md:max-w-lg lg:max-w-xl mx-auto shadow-lg bg-white">
             <div className="mb-4">
-                <h2 className="font-bold text-2xl sm:text-3xl text-blue-600">{heading}</h2>
+                <h2 className="font-bold text-2xl sm:text-3xl">{heading}</h2>
                 <h4 className="text-gray-500 text-sm sm:text-base mt-1">{subheading}</h4>
             </div>
 

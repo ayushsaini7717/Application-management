@@ -94,7 +94,7 @@ const AdminPage=()=>{
                 </div>
               </div>
       
-              <div className="flex flex-wrap gap-2 bg-gray-100 w-fit px-4 py-3 rounded font-bold mt-4">
+              <div className="flex flex-wrap gap-2 bg-blue-50 w-fit px-4 py-3 rounded font-bold mt-4">
                 <button
                   className={`cursor-pointer px-3 py-2 rounded ${
                     IsApplication ? "bg-white" : "bg-gray-100"
@@ -185,7 +185,7 @@ const AdminPage=()=>{
                         SetIsapplication(false);
                         router.push("/admin?add-job=true");
                       }}
-                      className="flex items-center gap-2 bg-black text-white py-2 px-4 rounded hover:bg-black/80 mt-3 md:mt-0"
+                      className="flex items-center gap-2 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-400 mt-3 md:mt-0"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -205,7 +205,7 @@ const AdminPage=()=>{
                     </button>
                   </div>
       
-                  <div className="hidden md:grid grid-cols-5 place-items-center mt-4 bg-gray-100 py-2 font-medium">
+                  <div className="hidden md:grid grid-cols-5 place-items-center mt-4 bg-blue-50 py-2 font-medium">
                     <div>Job Title</div>
                     <div>Department</div>
                     <div>Location</div>

@@ -57,8 +57,11 @@ const ApplyApplication = () => {
     return (
         <div className="min-h-screen flex justify-center items-center px-4 py-8">
             <div className="max-w-4xl w-full bg-white border border-gray-300 rounded-lg p-6 shadow-lg">
+                <div className="bg-blue-50 py-5 rounded">
                 <h1 className="text-2xl font-bold text-center">Apply for {jobData.basicdetails.title}</h1>
                 <h5 className="text-gray-600 text-center">{jobData.basicdetails.department} | {jobData.basicdetails.location} | {jobData.basicdetails.type}</h5>
+
+                </div>
 
                 <form onSubmit={handler} encType="multipart/form-data" className="mt-6 flex flex-col gap-4">
                     <div className="flex flex-col md:flex-row gap-4">
@@ -91,7 +94,7 @@ const ApplyApplication = () => {
 
                     <ReCAPTCHA sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_PUBLIC_KEY!} onChange={(token) => setCaptchaToken(token)} />
 
-                    <button onClick={()=>Setloading(true)} className="cursor-pointer mt-2 text-white bg-black py-1 rounded hover:bg-gray-800" type="submit">{loading ? "Submitting..." : "Submit"}</button>
+                    <button onClick={()=>Setloading(true)} className="cursor-pointer mt-2 text-white bg-blue-500 py-1 rounded hover:bg-blue-400" type="submit">{loading ? "Submitting..." : "Submit"}</button>
                     </form>
             </div>
         </div>

@@ -157,7 +157,7 @@ const NewApplication=({SearchCandidate,SearchBy}: NewApplicationProps)=>{
     }, [currentPage, application, SearchCandidate, SearchBy]);
     
     return <div>
-        <div className="hidden md:grid grid-cols-6 mt-3 place-items-center bg-gray-100 text-center font-semibold">
+        <div className="hidden md:grid grid-cols-6 mt-3 place-items-center bg-blue-50 text-center font-semibold">
             <div className="py-2">Candidate</div>
             <div className="py-2">Position</div>
             <div className="py-2">Contact</div>
