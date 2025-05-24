@@ -1,10 +1,16 @@
 "use server";
 
 import { PrismaClient } from "@prisma/client";
-import { Client, Storage, ID } from "appwrite";
+// import { Client, Storage, ID } from "appwrite";
 import { NextResponse } from "next/server";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_ANON_KEY!
+);
 
 const prisma = new PrismaClient();
 
@@ -44,32 +50,56 @@ export async function POST(req: Request){
     const Lname=formdata.get("Lname") as string;
     const email=formdata.get("email") as string;
     const mobile = formdata.get("mobile") as string;
-    const resume = formdata.get("resume") as File;
+    const resume = formdata.get("resume");
     const Role=formdata.get("role") as string;
 
     try{
 
-        const client = new Client()
-            .setEndpoint("https://cloud.appwrite.io/v1")
-            .setProject(process.env.PROJECT_ID || ""); 
+        // const formData = await req.formData();
+        // const resume = formData.get("resume");
 
-        const storage = new Storage(client);
+        if (!resume || typeof resume === "string") {
+        return NextResponse.json({ msg: "No valid file provided!" }, { status: 400 });
+        }
 
-        const response = await storage.createFile(
-            process.env.BUCKET_ID || "",
-            ID.unique(),
-            resume
-        );
+        const file = resume as Blob;
 
-        const fileUrl = `https://cloud.appwrite.io/v1/storage/buckets/${process.env.BUCKET_ID}/files/${response.$id}/view?project=${process.env.PROJECT_ID}&mode=admin`;
-        console.log(fileUrl);
+        const { data, error } = await supabase.storage
+        .from("application-management")
+        .upload(`public/${crypto.randomUUID()}.pdf`, file, {
+            cacheControl: "3600",
+            upsert: false,
+        });
+
+        if (error) {
+        console.error("Upload error:", error);
+        return NextResponse.json({ msg: "Upload failed!" }, { status: 500 });
+        }
+
+        const { data: urlData } = supabase.storage
+        .from("application-management")
+        .getPublicUrl(data.path);
+        // const client = new Client()
+        //     .setEndpoint("https://cloud.appwrite.io/v1")
+        //     .setProject(process.env.PROJECT_ID || ""); 
+
+        // const storage = new Storage(client);
+
+        // const response = await storage.createFile(
+        //     process.env.BUCKET_ID || "",
+        //     ID.unique(),
+        //     resume
+        // );
+
+        // const fileUrl = `https://cloud.appwrite.io/v1/storage/buckets/${process.env.BUCKET_ID}/files/${response.$id}/view?project=${process.env.PROJECT_ID}&mode=admin`;
+        // console.log(fileUrl);
         await prisma.application.create({
             data: {
                 Fname: Fname,
                 Lname: Lname,
                 email: email,
                 mobile: mobile,
-                resumelink: fileUrl,
+                resumelink: urlData.publicUrl,
                 position: Role,
                 date: new Date().toISOString().split('T')[0],
                 UserId: UserId

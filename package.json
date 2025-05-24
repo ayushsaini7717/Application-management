@@ -13,6 +13,7 @@
     "@prisma/client": "^6.5.0",
     "@radix-ui/react-select": "^2.2.2",
     "@radix-ui/react-slot": "^1.2.0",
+    "@supabase/supabase-js": "^2.49.8",
     "@types/bcryptjs": "^2.4.6",
     "@types/recoil": "^0.0.1",
     "appwrite": "^17.0.1",
