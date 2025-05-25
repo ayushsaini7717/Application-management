@@ -28,6 +28,7 @@ model application{
   resumelink String
   position String
   date String
+  summary String?
   scheduled Boolean @default(false)
   pending Boolean @default(true)
 

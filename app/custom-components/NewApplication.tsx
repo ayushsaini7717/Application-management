@@ -99,6 +99,9 @@ const NewApplication=({SearchCandidate,SearchBy}: NewApplicationProps)=>{
     const [paginatingApplication,SetPaginatingApplication]=useState<scheme[]>([]);
     const [maxPage,SetmaxPage]=useState(0);
     const [SearchedCandidateList,SetSearchCandidatesList]=useState<scheme[]>([]);
+    const [Summary,SetSummary]=useState<string[]>([]);
+    const [IsopenSummary,SetIsopenSummary]=useState(false);
+    const [summaryLoading,SetSummaryLoading]=useState(false);
 
 
     const deleterApplication=(id: string)=>{
@@ -157,16 +160,26 @@ const NewApplication=({SearchCandidate,SearchBy}: NewApplicationProps)=>{
     }, [currentPage, application, SearchCandidate, SearchBy]);
     
     return <div>
-        <div className="hidden md:grid grid-cols-6 mt-3 place-items-center bg-blue-50 text-center font-semibold">
+        <div className={`h-[60vh] w-[40vw] ${!IsopenSummary?"hidden":"block"} absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform bg-blue-100 text-black p-4 rounded-md overflow-y-auto`}>
+            <div onClick={()=>{
+                SetIsopenSummary(false);
+            }} className="bold cursor-pointer inline bg-black text-white px-2 py-1 rounded">close X</div>
+            <div className="mt-2">{summaryLoading ?<div className="flex justify-center items-center">Loading...</div> : Summary.map((item,i)=>{
+                const cleaned=item.replaceAll("*","");
+                return <div key={i}>{i+1}-- {cleaned}</div>}
+                )}</div>
+        </div>
+        <div className="hidden md:grid grid-cols-7 mt-3 place-items-center bg-blue-50 text-center font-semibold">
             <div className="py-2">Candidate</div>
             <div className="py-2">Position</div>
             <div className="py-2">Contact</div>
             <div className="py-2">Status</div>
             <div className="py-2">Resume</div>
+            <div className="py-2">Summary</div>
             <div className="py-2">Action</div>
         </div>
         {paginatingApplication.length === 0?<div className="flex justify-center items-center pt-8 font-semibold">No Candidates found!</div> : paginatingApplication.map((item, id) => (
-                    <div key={id} className="grid grid-cols-1 md:grid-cols-6 place-items-center text-center py-2 border-b border-gray-200">
+                    <div key={id} className="grid grid-cols-1 md:grid-cols-7 place-items-center text-center py-2 border-b border-gray-200">
                     <div>{item.Fname}</div>
                     <div>{item.position}</div>
                     <div className="flex flex-col items-center">
@@ -182,6 +195,33 @@ const NewApplication=({SearchCandidate,SearchBy}: NewApplicationProps)=>{
                         }}
                         >
                         View Resume
+                        </button>
+                    </div>
+                    <div>
+                    <button
+                        className="cursor-pointer border border-gray-300 shadow rounded px-2 py-1"
+                        onClick={()=>{
+                            const summarizer=async ()=>{
+                                SetSummaryLoading(true);
+                                SetIsopenSummary(true);
+                                const id=item.id;
+                                const resumelink=item.resumelink;
+                                const res=await fetch("/api/summarizer",{
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: JSON.stringify({id,resumelink})
+                                })
+                                const data=await res.json();
+                                const arr=data.summary.split("**");
+                                SetSummary(arr);
+                                SetSummaryLoading(false);
+                            }
+                            summarizer();
+                        }}
+                        >
+                        View Summary
                         </button>
                     </div>
                     <div className="flex gap-2">
