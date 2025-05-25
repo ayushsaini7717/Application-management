@@ -59,7 +59,7 @@ export async function POST(req: Request){
         // const resume = formData.get("resume");
 
         if (!resume || typeof resume === "string") {
-        return NextResponse.json({ msg: "No valid file provided!" }, { status: 400 });
+            return NextResponse.json({ msg: "No valid file provided!" }, { status: 400 });
         }
 
         const file = resume as Blob;
@@ -93,6 +93,7 @@ export async function POST(req: Request){
 
         // const fileUrl = `https://cloud.appwrite.io/v1/storage/buckets/${process.env.BUCKET_ID}/files/${response.$id}/view?project=${process.env.PROJECT_ID}&mode=admin`;
         // console.log(fileUrl);
+        
         await prisma.application.create({
             data: {
                 Fname: Fname,
