@@ -205,13 +205,12 @@ const NewApplication=({SearchCandidate,SearchBy}: NewApplicationProps)=>{
                                 SetSummaryLoading(true);
                                 SetIsopenSummary(true);
                                 const id=item.id;
-                                const resumelink=item.resumelink;
                                 const res=await fetch("/api/summarizer",{
                                     method: "POST",
                                     headers: {
                                         "Content-Type": "application/json"
                                     },
-                                    body: JSON.stringify({id,resumelink})
+                                    body: JSON.stringify({id})
                                 })
                                 const data=await res.json();
                                 const arr=data.summary.split("**");

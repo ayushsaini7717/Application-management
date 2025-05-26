@@ -12,7 +12,6 @@ const GEMINI_API_URL = process.env.GEMINI_API_URL;
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const pdfUrl = body.pdfUrl;
     const id=body.id;
 
     const IsOnDb=await prisma.application.findFirst({
@@ -23,9 +22,8 @@ export async function POST(req: Request) {
 
     if(IsOnDb?.summary != null){
       return NextResponse.json({summary: IsOnDb.summary});
-    }
-    
-    const response = await axios.get(pdfUrl, {
+    }    
+    const response = await axios.get(IsOnDb?.resumelink!, {
       responseType: "arraybuffer",
     });
 
