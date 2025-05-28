@@ -35,6 +35,7 @@ const ApplyApplication = () => {
         const form=e.currentTarget as HTMLFormElement;
         const formdata=new FormData(form);
         formdata.append('token',captchaToken);
+        formdata.append('jobid',id!);
         
         try{
             await fetch("/api/apply",{

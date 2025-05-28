@@ -14,7 +14,8 @@ interface scheme{
     position: string,
     date: string,
     scheduled: boolean,
-    pending: boolean
+    pending: boolean,
+    Percentage: string
 }
 
 
@@ -169,9 +170,10 @@ const NewApplication=({SearchCandidate,SearchBy}: NewApplicationProps)=>{
                 return <div key={i}>{i+1}-- {cleaned}</div>}
                 )}</div>
         </div>
-        <div className="hidden md:grid grid-cols-7 mt-3 place-items-center bg-blue-50 text-center font-semibold">
+        <div className="hidden md:grid grid-cols-8 mt-3 place-items-center bg-blue-50 text-center font-semibold">
             <div className="py-2">Candidate</div>
             <div className="py-2">Position</div>
+            <div>Matched (%)</div>
             <div className="py-2">Contact</div>
             <div className="py-2">Status</div>
             <div className="py-2">Resume</div>
@@ -179,9 +181,10 @@ const NewApplication=({SearchCandidate,SearchBy}: NewApplicationProps)=>{
             <div className="py-2">Action</div>
         </div>
         {paginatingApplication.length === 0?<div className="flex justify-center items-center pt-8 font-semibold">No Candidates found!</div> : paginatingApplication.map((item, id) => (
-                    <div key={id} className="grid grid-cols-1 md:grid-cols-7 place-items-center text-center py-2 border-b border-gray-200">
+                    <div key={id} className="grid grid-cols-1 md:grid-cols-8 place-items-center text-center py-2 border-b border-gray-200">
                     <div>{item.Fname}</div>
                     <div>{item.position}</div>
+                    <div>{item.Percentage!=null ? item.Percentage : <div>-</div>}</div>
                     <div className="flex flex-col items-center">
                         <div>{item.email}</div>
                         <div className="text-gray-500">{item.mobile}</div>

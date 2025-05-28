@@ -52,6 +52,7 @@ export async function POST(req: Request){
     const mobile = formdata.get("mobile") as string;
     const resume = formdata.get("resume");
     const Role=formdata.get("role") as string;
+    const jobId=formdata.get("jobid") as string;
 
     try{
 
@@ -103,7 +104,8 @@ export async function POST(req: Request){
                 resumelink: urlData.publicUrl,
                 position: Role,
                 date: new Date().toISOString().split('T')[0],
-                UserId: UserId
+                UserId: UserId,
+                JobId: jobId
             }
         })
         return NextResponse.json({message: "Successfully Submitted!"});

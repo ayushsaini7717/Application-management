@@ -31,9 +31,12 @@ model application{
   summary String?
   scheduled Boolean @default(false)
   pending Boolean @default(true)
+  Percentage String?
 
   UserId String?
   user User? @relation(fields: [UserId],references: [id])
+  JobId String
+  applications jobopenings @relation(fields: [JobId],references: [id])
 }
 
 model jobopenings{
@@ -50,6 +53,7 @@ model jobopenings{
   requirement Requirements[]
   benifit Benifits[]
   skill Skills[]
+  applications application[]
 }
 
 model Responsibilities{
