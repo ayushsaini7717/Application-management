@@ -216,7 +216,7 @@ const NewApplication=({SearchCandidate,SearchBy}: NewApplicationProps)=>{
                                     body: JSON.stringify({id})
                                 })
                                 const data=await res.json();
-                                const arr=data.summary.split("**");
+                                const arr=data.summary.split(". ");
                                 SetSummary(arr);
                                 SetSummaryLoading(false);
                             }
