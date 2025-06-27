@@ -3,6 +3,14 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Pagination from "./Pagination";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+  } from "@/components/ui/dialog"
 
 interface scheme{
     id: string,
@@ -69,13 +77,22 @@ CareerPoint
     })
 }
 
-const Scheduler=async(id: string)=>{
-    await fetch("api/schedule",{
+const Scheduler=async(id: string,email: string,date: string,startTime: string,duration: string)=>{
+    const [res1,res2]=await Promise.all([fetch("api/schedule",{
         method: "POST",
         body: JSON.stringify({
             id
         })
-    })
+    }),fetch("api/create-meet",{
+        method: "POST",
+        body: JSON.stringify({
+            email: email,
+            date: date,
+            startTime: startTime,
+            duration: duration
+        })
+    })])
+    
 }
 
 const Canceller=async(id: string)=>{
@@ -103,6 +120,9 @@ const NewApplication=({SearchCandidate,SearchBy}: NewApplicationProps)=>{
     const [Summary,SetSummary]=useState<string[]>([]);
     const [IsopenSummary,SetIsopenSummary]=useState(false);
     const [summaryLoading,SetSummaryLoading]=useState(false);
+    const [date,setdate]=useState('');
+    const [time,setTime]=useState('');
+    const [duration,setDuration]=useState('');
 
 
     const deleterApplication=(id: string)=>{
@@ -227,16 +247,74 @@ const NewApplication=({SearchCandidate,SearchBy}: NewApplicationProps)=>{
                         </button>
                     </div>
                     <div className="flex gap-2">
-                        <button
+                        {/* <button
                         onClick={() => {
-                            deleterApplication(item.id);
-                            Scheduler(item.id);
-                            ScheduleMailer(item.email, item.Fname);
+                            // deleterApplication(item.id);
+                            // Scheduler(item.id);
+                            // ScheduleMailer(item.email, item.Fname);
                         }}
                         className="text-green-600 cursor-pointer"
                         >
                         Schedule
-                        </button>
+                        </button> */}
+                        <div className="text-green-600">
+                            <Dialog>
+                            <DialogTrigger className="cursor-pointer">Schedule</DialogTrigger>
+                            <DialogContent>
+                                <DialogHeader>
+                                <DialogTitle>Select Meeting timings</DialogTitle>
+                                <DialogDescription>
+                                    Please choose a date, time, and duration for your meeting.
+                                </DialogDescription>
+                                </DialogHeader>
+                                <label>
+                                    Email: &nbsp;
+                                    <input
+                                    type="email"
+                                    className="border p-2 w-full"
+                                    value={item.email}
+                                    readOnly
+                                    />
+                                </label>
+                                <label>
+                                    Date:
+                                    <input
+                                    type="date"
+                                    className="border p-2 w-full"
+                                    value={date}
+                                    onChange={(e) => setdate(e.target.value)}
+                                    required
+                                    />
+                                </label>
+                                <label>
+                                    Time:
+                                    <input
+                                    type="time"
+                                    className="border p-2 w-full"
+                                    value={time}
+                                    onChange={(e)=>setTime(e.target.value)}
+                                    />
+                                </label>
+                                <label>
+                                    Duration:
+                                    <input
+                                    type="number"
+                                    className="border p-2 w-full"
+                                    value={duration}
+                                    onChange={(e)=>setDuration(e.target.value)}
+                                    />
+                                </label>
+                                <button
+                                onClick={()=>{
+                                    deleterApplication(item.id);
+                                    Scheduler(item.id,item.email,date,time,duration);
+                                }}
+                                className="cursor-pointer text-white bg-blue-500 font-bold px-4 py-2 rounded hover:bg-blue-400">
+                                    Send Mail
+                                </button>
+                            </DialogContent>
+                            </Dialog>
+                        </div>
                         <button
                         onClick={() => {
                             deleterApplication(item.id);
