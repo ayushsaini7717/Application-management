@@ -111,8 +111,7 @@ export async function POST(req: Request){
         return NextResponse.json({message: "Successfully Submitted!"});
     }catch(err){
         console.log(err);
-        return NextResponse.json({ message: "Something went wrong!" });
-
+        throw new Error("Something went wrong! Error: "+err);
     }
 }
 
