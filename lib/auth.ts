@@ -56,5 +56,21 @@ export const authOptions = {
 
       return true;
     },
+    callbacks: {
+      async session({ session, token }:any) {
+        // Attach id from token to session
+        if (token?.id) {
+          session.user.id = token.id as string;
+        }
+        return session;
+      },
+      async jwt({ token, user }:any) {
+        // First time JWT callback is called, user is available
+        if (user) {
+          token.id = user.id;
+        }
+        return token;
+      },
+    },
   },
 };

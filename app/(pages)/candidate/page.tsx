@@ -30,10 +30,10 @@
 //   return null; 
 // }
 import JobCard from "@/app/custom-components/JobCard";
-import NavigateBtn from "@/app/custom-components/navigateBtn";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import "../../../styles/underlineGradient.css";
+import { redirect } from "next/navigation";
 
 interface applicationSchema{
   id: string,
@@ -53,7 +53,7 @@ const Candidatepage=async ()=>{
   const session=await getServerSession(authOptions);
 
   if(!session){
-    return <div>You are out of session</div>
+    redirect('/signup');
   }
 
   const applications=await fetch(`${process.env.ROOT_URL}/api/myjobs?email=${session.user?.email}`,{
@@ -75,9 +75,7 @@ const Candidatepage=async ()=>{
         </div>
         <div className="text-gray-500">Track and manage your job applications</div>
       </div>
-      <div className="mt-2 mr-2">
-        <NavigateBtn path="/job-openings" text="Browse Jobs"></NavigateBtn>
-      </div>
+      
     </div>
 
     <div className="bg-white">

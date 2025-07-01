@@ -4,11 +4,16 @@ import { useRouter } from "next/navigation";
 import { FiMenu, FiX } from "react-icons/fi";
 import { useSession, signOut } from "next-auth/react";
 import '../../styles/underlineGradient.css'
+import { usePathname } from 'next/navigation'
 
 const Navbar = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const { data: session } = useSession();
+  const pathname = usePathname()
+  const hiddenRoutes = ['/signup', '/candidate']
+  
+  if (hiddenRoutes.includes(pathname)) return null
 
   return (
     <>

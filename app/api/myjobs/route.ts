@@ -7,19 +7,15 @@ export async function GET(req: Request){
     const email=searchParams.get("email");
     
     try{
-        const applications=await prisma.application.findMany({
+        const applications = await prisma.application.findMany({
             where: {
-                user: {
-                    email: email!
-                }
-            }
-        })
+              email: "sainiayush7717@gmail.com",
+            },
+        });
+          
 
-        if(applications){
-            return NextResponse.json({applications});
-        }else{
-            return NextResponse.json({applications: []});
-        }
+        return NextResponse.json({applications});
+        
     }catch(e){
         console.log(e);
     }
