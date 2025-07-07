@@ -20,9 +20,9 @@ export default function Home() {
 
             <div className="flex flex-col md:flex-row items-center justify-center gap-4 mt-10">
               <BrowseBtn/>
-              <button className="border cursor-pointer hover:bg-black/5 bg-red-500 text-white border-gray-400 rounded px-4 py-2 font-semibold">
+              {/* <button className="border cursor-pointer hover:bg-black/5 bg-red-500 text-white border-gray-400 rounded px-4 py-2 font-semibold">
                 Learn About Us
-              </button>
+              </button> */}
             </div>
 
           </div>
