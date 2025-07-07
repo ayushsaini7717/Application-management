@@ -36,7 +36,7 @@ const ModalComp = () => {
                 <div className="w-full mt-4">
                     <button
                         onClick={() => {
-                            if (otpval.length !== 0 && otpval === "348000") {
+                            if (otpval.length !== 0 && otpval === "121104") {
                                 Cookies.set("user-admin", "true");
                                 router.push("/admin");
                             }
